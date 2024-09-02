@@ -13,6 +13,7 @@ models/*.joblib
 .terraform.lock.hcl
 variables.tf
 terraform.tfvars
-.github
+# .github
 .ipynb_checkpoints
 infrastructure
+.env
