@@ -14,7 +14,7 @@ env:
   DOCKER_HUB_USER: ${{ secrets.DOCKER_HUB_USER }}
   DOCKER_HUB_REPOSITORY: ${{ secrets.DOCKER_HUB_REPOSITORY }}
   DOCKER_HUB_ACCESS_TOKEN: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-  IMAGE_NAME: ${{ secrets.DOCKER_HUB_USER }}/${{ secrets.DOCKER_HUB_REPOSITORY }}
+  IMAGE_NAME: ${{ secrets.DOCKER_HUB_USER }}/${{ secrets.DOCKER_HUB_REPOSITORY }}:${{ github.sha }}
   CONTAINER_NAME: ${{ secrets.CONTAINER_NAME }}
   SERVER_HOST: ${{ secrets.SERVER_HOST }}
   SERVER_USER: ${{ secrets.SERVER_USER }}
@@ -43,33 +43,20 @@ jobs:
     needs: lint
     runs-on: ubuntu-latest
     steps:
-    - name: Get latest tag pushed
-      id: tag
-      uses: 32teeth/action-github-tag@v1.0.7
-      with:
-        numbers_only: true
     - name: Build Docker image
-      run: docker build -f Dockerfile.prod -t ${{ env.IMAGE_NAME }}:${{ steps.tag.outputs.tag }} .
+      run: docker build -f Dockerfile.prod -t ${{ env.IMAGE_NAME }} .
     - name: Login to Docker Hub
       uses: docker/login-action@v1
       with:
         username: ${{ env.DOCKER_HUB_USER }}
         password: ${{ env.DOCKER_HUB_ACCESS_TOKEN }}
     - name: Push image to Docker Hub
-      run: docker push ${{ env.IMAGE_NAME }}:${{ steps.tag.outputs.tag }}
+      run: docker push ${{ env.IMAGE_NAME }}
 
   deploy:
     needs: build
     runs-on: ubuntu-latest
     steps:
-    - name: Get the version
-      id: get_version
-      run: |
-        if [[ $GITHUB_REF == refs/tags/* ]]; then
-          echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
-        else
-          echo "VERSION=latest" >> $GITHUB_OUTPUT
-        fi
     - name: Deploy to server
       uses: appleboy/ssh-action@master
       with:
@@ -80,4 +67,4 @@ jobs:
           docker pull ${{ env.IMAGE_NAME }}
           docker stop ${{ env.CONTAINER_NAME }} || true
           docker rm ${{ env.CONTAINER_NAME }} || true
-          docker run -d --name ${{ env.CONTAINER_NAME }} ${{ env.IMAGE_NAME }}:${{ steps.get_version.outputs.VERSION }}
+          docker run -d --name ${{ env.CONTAINER_NAME }} ${{ env.IMAGE_NAME }}
