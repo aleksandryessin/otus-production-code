@@ -39,6 +39,7 @@ jobs:
     needs: lint
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v2
     - name: Checkout repository
       run: ls -la
     - name: Build Docker image
