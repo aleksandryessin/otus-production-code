@@ -41,8 +41,9 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Get release version
-      run: echo "VERSION=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
-      run: echo $VERSION
+      run: |
+        echo "VERSION=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
+        echo $VERSION
     - uses: actions/checkout@v2
     - name: Build Docker image
       run: docker build -t ${{ env.IMAGE_NAME }}:$VERSION .
