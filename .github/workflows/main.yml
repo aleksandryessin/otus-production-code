@@ -2,10 +2,6 @@ name: CI/CD Pipeline
 
 on:
   push:
-    tags:
-      - 'v*.*.*'
-      - '*.*.*'
-      - '*'
     branches: [ main ]
   pull_request:
     branches: [ main ]
@@ -43,6 +39,8 @@ jobs:
     needs: lint
     runs-on: ubuntu-latest
     steps:
+    - name: Checkout repository
+      run: ls -la
     - name: Build Docker image
       run: docker build -f Dockerfile.prod -t ${{ env.IMAGE_NAME }} .
     - name: Login to Docker Hub
