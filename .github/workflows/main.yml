@@ -39,19 +39,22 @@ jobs:
     needs: lint
     runs-on: ubuntu-latest
     steps:
-    - uses: actions-ecosystem/action-get-latest-tag@v1
-      id: get-latest-tag
+    - name: Get latest tag pushed
+    id: tag
+    uses: 32teeth/action-github-tag@v1
+    with:
+      numbers_only: true
     - name: Build Docker image
       id: build
       run:
-        docker build -t ${{ env.IMAGE_NAME }}:${{ steps.get-latest-tag.outputs.tag }} .
+        docker build -t ${{ env.IMAGE_NAME }}:${{ steps.tag.outputs.tag }} .
     - name: Login to Docker Hub
       uses: docker/login-action@v1
       with:
         username: ${{ env.DOCKER_HUB_USER }}
         password: ${{ env.DOCKER_HUB_ACCESS_TOKEN }}
     - name: Push image to Docker Hub
-      run: docker push ${{ env.IMAGE_NAME }}:${{ steps.get-latest-tag.outputs.tag }}
+      run: docker push ${{ env.IMAGE_NAME }}:${{ steps.tag.outputs.tag }}
 
   deploy:
     needs: build
