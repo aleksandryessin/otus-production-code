@@ -15,5 +15,5 @@ variables.tf
 terraform.tfvars
 # .github
 .ipynb_checkpoints
-infrastructure
+# infrastructure
 .env

@@ -25,7 +25,7 @@ def main() -> None:
 
     logger.info("Saving model")
     os.makedirs("models", exist_ok=True)
-    joblib.dump(model, os.path.join("models", "model.joblib"))
+    joblib.dump(model, os.path.join("models", "model_in_docker.joblib"))
 
     logger.info("Evaluating model")
     accuracy = evaluate_model(model, test)

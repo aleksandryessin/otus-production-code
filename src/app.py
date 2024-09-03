@@ -12,7 +12,7 @@ from src.inference import load_model, predict
 
 app = Flask(__name__)
 
-MODEL_PATH = os.path.join("models", "model.joblib")
+MODEL_PATH = os.path.join("models", "model_in_docker.joblib")
 MODEL = load_model(MODEL_PATH)
 
 

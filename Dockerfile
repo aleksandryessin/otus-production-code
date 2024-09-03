@@ -1,3 +1,6 @@
 FROM python:3.11.4-slim-buster
 
-CMD ["tail", "-f", "/dev/null"]
+COPY entrypoint.sh entrypoint-simple.sh
+RUN chmod +x entrypoint-simple.sh
+
+ENTRYPOINT ["bash", "./entrypoint-simple.sh"]
