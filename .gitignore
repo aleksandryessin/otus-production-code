@@ -17,3 +17,4 @@ terraform.tfvars
 .ipynb_checkpoints
 # infrastructure
 .env
+*.info
