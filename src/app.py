@@ -2,7 +2,9 @@
 Application main service
 """
 
+import sys
 import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from flask import Flask, request, jsonify
 import pandas as pd
@@ -38,12 +40,12 @@ def prediction():
     prediction
         The predicted iris species
     """
-    try: 
+    try:
         data = request.json
         df = pd.DataFrame(data, index=[0])
         df = df.reset_index(drop=True)
         pred_raw = predict(MODEL, df)
-        classes = ["Setosa", "Versicolour", "Virginica"] 
+        classes = ["Setosa", "Versicolour", "Virginica"]
         prediction = classes[pred_raw[0]]
         return jsonify({"prediction": prediction})
     except Exception as e:
