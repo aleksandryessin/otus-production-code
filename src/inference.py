@@ -6,6 +6,11 @@ Description: This module is used to load the model and make predictions on the t
 import joblib
 from typing import List
 
+import sys
+import os
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 import pandas as pd
 from sklearn.base import BaseEstimator
 
@@ -29,7 +34,7 @@ def load_model(model_path: str) -> BaseEstimator:
         return model
     except FileNotFoundError as e:
         raise FileNotFoundError(f"Model not found at {model_path}") from e
-    
+
 
 def predict(model: BaseEstimator, df: pd.DataFrame) -> List[int]:
     """

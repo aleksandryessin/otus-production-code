@@ -10,4 +10,4 @@ RUN pip install --no-cache-dir -r requirements-dev.txt && \
 
 ENV PYTHONPATH=/app
 
-ENTRYPOINT ["jupyter", "notebook", "--ip=0.0.0.0.", "--allow-root", "--no-browser", "--NotebookApp.token=''"]
+ENTRYPOINT ["jupyter", "notebook", "--ip=0.0.0.0", "--allow-root", "--no-browser", "--NotebookApp.token=''"]
