@@ -7,7 +7,7 @@ from loguru import logger
 import sys
 import os
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+# sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from src.preprocessing import load_data, split_data
 from src.train import train_model, evaluate_model
